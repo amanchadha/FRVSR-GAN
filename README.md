@@ -2,7 +2,7 @@
 
 Project for Stanford CS230: Deep Learning
 
-```Python3 | PyTorch | CV2 | GANs | CNNs```
+```Python3 | PyTorch | OpenCV2 | GANs | CNNs```
 
 ## Required Packages
 
