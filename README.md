@@ -2,7 +2,7 @@
 
 Project for Stanford CS230: Deep Learning
 
-```python3 | Torch | GAN | CNN```
+```Python3 | Torch | GAN | CNN```
 
 ## Required Packages
 
@@ -34,15 +34,9 @@ Figure 2: Network architecture
 
 ## Dataset
 
-To evaluate our proposed model, we used the [Vimeo90K](http://data.csail.mit.edu/tofu/testset/vimeo_test_clean.zip) dataset collected in the TOFlow project of MIT CSAIL [8] which contains around 90,000 7-frame HR sequences with a fixed resolution, extracted from 39K video clips from Vimeo.com. When training our models, we generate the corresponding LR frame for each HR input frame by performing 4x down-sampling. To extend our dataset further, we have also built a video-to-frames tool to collect more data for testing from YouTube. 
+To evaluate our proposed model, we used the [Vimeo90K](http://data.csail.mit.edu/tofu/testset/vimeo_test_clean.zip) dataset collected in the TOFlow project of MIT CSAIL which contains around 90,000 7-frame HR sequences with a fixed resolution, extracted from 39K video clips from Vimeo.com. When training our models, we generate the corresponding LR frame for each HR input frame by performing 4x down-sampling. To extend our dataset further, we have also built a video-to-frames tool to collect more data for testing from YouTube. 
 
 ## Results
-
-We trained our model on the dataset for 9 epochs. and compared with default SRGAN model in the repo. **We did not retrain SRGAN in our dataset**, so the result is for reference only.
-
-The following results are produced by 7-epoch model. 
-
-### Temporal Profiles
 
 ![results](https://github.com/amanchadha/iSeeBetter/blob/master/images/iSeeBetter_Results.jpg)
 
