@@ -2,7 +2,7 @@
 This file contains implementation of dataset classes.
 aman@amanchadha.com
 
-Credits to FR-SRGAN (https://github.com/ReNginx/FR-SRGAN)
+Adapted from FR-SRGAN, MIT 6.819 Advances in Computer Vision, Nov 2018
 """
 
 import cv2

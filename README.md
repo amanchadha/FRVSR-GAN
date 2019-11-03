@@ -42,6 +42,6 @@ To evaluate our proposed model, we used the [Vimeo90K](http://data.csail.mit.edu
 
 ## Acknowledgements
 
-Credits to:
+Credits:
 - [SRGAN Implementation](https://github.com/leftthomas/SRGAN) by LeftThomas.
-- [FR-SRGAN](https://github.com/ReNginx/FR-SRGAN) for the FRVSR implementation.
+- We adapted the [FR-SRGAN](https://github.com/ReNginx/FR-SRGAN) implementation for Adaptive-FRVSR.
