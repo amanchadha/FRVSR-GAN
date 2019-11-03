@@ -1,0 +1,5 @@
+pytorch
+numpy
+scikit-image
+cv2
+tqdm
