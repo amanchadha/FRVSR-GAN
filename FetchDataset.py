@@ -48,7 +48,7 @@ if not os.path.exists(SOURCE_PATH):
 
     with ZipFile(os.path.join(DATA_FOLDER, 'vimeo_test_clean.zip'), 'r') as zipObj:
         # Extract all the contents of zip file in current directory
-        zipObj.extractall()
+        zipObj.extractall(DATA_FOLDER)
 else:
     # Recursively remove all the ".DS_Store files"
     for currentPath, _, currentFiles in os.walk(SOURCE_PATH):
