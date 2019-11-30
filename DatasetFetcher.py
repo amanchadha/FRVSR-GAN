@@ -42,9 +42,9 @@ if not os.path.exists(DATA_FOLDER):
     try:
         os.mkdir(DATA_FOLDER)
     except OSError:
-        logger.info("Creation of the directory %s failed" % path)
+        logger.info("Creation of the directory %s failed", DATA_FOLDER)
     else:
-        logger.debug("Successfully created the directory %s " % path)
+        logger.debug("Successfully created the directory: %s", DATA_FOLDER)
 
 class downloadProgressBar(tqdm):
     def update_to(self, b=1, bsize=1, tsize=None):
@@ -63,7 +63,7 @@ if not os.path.exists(SOURCE_PATH):
         downloadURL(DATASET_URL, os.path.join(DATA_FOLDER, DATASET_FILE))
 
     # Extract it
-    logger.info("Extracting", os.path.join(DATA_FOLDER, DATASET_FILE))
+    logger.info("Extracting: %s", os.path.join(DATA_FOLDER, DATASET_FILE))
 
     try:
         with zipfile.ZipFile(os.path.join(DATA_FOLDER, DATASET_FILE), 'r') as zipObj:
@@ -96,5 +96,5 @@ for video in videoList:
        count += 1
        new_frames_name = count
        des = os.path.join(DEST_PATH, str(new_frames_name))
-       logger.info("Creating: ", des)
+       logger.info("Creating: %s", des)
        shutil.copytree(frames_path, des)
