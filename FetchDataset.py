@@ -23,6 +23,9 @@ DATA_FOLDER = "Data"
 # Folder within data where the HR dataset resides
 SOURCE_PATH = os.path.join(DATA_FOLDER, "vimeo_test_clean")
 
+# Filename of the dataset
+DATASET_FILE = os.path.basename(DATASET_URL)
+
 # Destination folder
 DEST_PATH = os.path.join(DATA_FOLDER, "HR")
 ########################################################################################################################
@@ -57,18 +60,18 @@ def downloadURL(url, output_path):
 if not os.path.exists(SOURCE_PATH):
     # Fetch the dataset if it hasn't been downloaded yet
     if not os.path.exists(SOURCE_PATH + '.zip'):
-        downloadURL(DATASET_URL, os.path.join(DATA_FOLDER, "vimeo_test_clean.zip"))
+        downloadURL(DATASET_URL, os.path.join(DATA_FOLDER, DATASET_FILE))
 
     # Extract it
-    logger.info("Extracting", os.path.join(DATA_FOLDER, 'vimeo_test_clean.zip'))
+    logger.info("Extracting", os.path.join(DATA_FOLDER, DATASET_FILE))
 
     try:
-        with zipfile.ZipFile(os.path.join(DATA_FOLDER, 'vimeo_test_clean.zip'), 'r') as zipObj:
+        with zipfile.ZipFile(os.path.join(DATA_FOLDER, DATASET_FILE), 'r') as zipObj:
         # Extract all the contents of zip file in current directory
             zipObj.extractall(DATA_FOLDER)
     except zipfile.BadZipFile:
         # Re-download the file
-        downloadURL(DATASET_URL, os.path.join(DATA_FOLDER, "vimeo_test_clean.zip"))
+        downloadURL(DATASET_URL, os.path.join(DATA_FOLDER, DATASET_FILE))
         zipObj.extractall(DATA_FOLDER)
 else:
     # Recursively remove all the ".DS_Store files"
