@@ -7,8 +7,6 @@ This file fetches and structures the dataset so it can be consumed by the algori
 - To delete all the .DS_Store files: find . -name '.DS_Store' -type f -delete
 
 aman@amanchadha.com
-
-Adapted from FR-SRGAN, MIT 6.819 Advances in Computer Vision, Nov 2018
 """
 
 import os, sys, shutil, urllib.request
