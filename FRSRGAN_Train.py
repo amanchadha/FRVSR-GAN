@@ -50,7 +50,14 @@ print('# discriminator parameters:', sum(param.numel() for param in netD.paramet
 
 generator_criterion = GeneratorLoss()
 
+def printCUDAStats():
+    logger.info("# of CUDA devices detected:", torch.cuda.device_count())
+    logger.info("Using CUDA device #:", torch.cuda.current_device())
+    logger.info("CUDA device name:", torch.cuda.get_device_name(torch.cuda.current_device()))
+
 if torch.cuda.is_available():
+    printCUDAStats()
+
     netG.cuda()
     netD.cuda()
     generator_criterion.cuda()
