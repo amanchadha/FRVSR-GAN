@@ -1,5 +1,5 @@
 """
-This file contains implementation of FRVSR (FNet and SRNet).
+This file contains implementation of FRVSR (FNet and SRNet) from https://arxiv.org/abs/1801.04590
 aman@amanchadha.com
 
 Adapted from FR-SRGAN, MIT 6.819 Advances in Computer Vision, Nov 2018
@@ -9,10 +9,6 @@ import unittest
 import torch
 import torch.nn as nn
 import torch.nn.functional as func
-import cv2
-import numpy as np
-from skimage import img_as_ubyte
-# an naive implementation of CVPR paper 'Frame-Recurrent Video Super-Resolution' https://arxiv.org/abs/1801.04590
 from torchvision.models import vgg16
 
 class ResBlock(nn.Module):
@@ -132,7 +128,6 @@ class SpaceToDepth(nn.Module):
         output = output.permute(0, 3, 1, 2)
         return output
 
-
 # please ensure that lr_height and lr_width must be a multiple of 8.
 class FRVSR(nn.Module):
     def __init__(self, batch_size, lr_height, lr_width):
@@ -178,8 +173,7 @@ class FRVSR(nn.Module):
         # print(self.EstLrImg)
         relative_placeNCHW = func.interpolate(relative_place, scale_factor=4, mode="bilinear")
         # relative_placeNCHW = torch.unsqueeze(self.hr_identity, dim=0)
-        relative_placeNWHC = relative_placeNCHW.permute(0, 2, 3,
-                                                        1)  # shift c to last, as grid_sample function needs it.
+        relative_placeNWHC = relative_placeNCHW.permute(0, 2, 3, 1)  # shift c to last, as grid_sample function needs it.
         afterWarp = func.grid_sample(self.EstHrImg, relative_placeNWHC)
         self.afterWarp = afterWarp  # for debugging, should be removed later.
         depthImg = self.todepth(afterWarp)

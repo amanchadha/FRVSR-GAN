@@ -20,6 +20,7 @@ parser.add_argument('--height', default=64, type=int, help='lr pic height')
 parser.add_argument('--dataset_size', default=0, type=int, help='dataset_size, 0 to use all')
 parser.add_argument('--batch_size', default=2, type=int, help='batch_size, default 2')
 parser.add_argument('--lr', default=1e-5, type=float, help='learning rate, default 1e-5')
+parser.add_argument('-d', '--debug', default=False, action='store_true', help='Print debug spew.')
 args = parser.parse_args()
 
 ################################################## iSEEBETTER TRAINER KNOBS #############################################
@@ -36,6 +37,7 @@ train_loader, val_loader = Dataset_OnlyHR.get_data_loaders(batch_size, dataset_s
 num_train_batches = len(train_loader)
 num_val_batches = len(val_loader)
 
+# Initialize Logger
 logger.initLogger(args.debug)
 
 # Use Generator as FRVSR
