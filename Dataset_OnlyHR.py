@@ -23,13 +23,10 @@ inverse_transform = transforms.Compose([transforms.Normalize(mean=[0., 0., 0.],
 
 upscale_factor = 4
 
-
-
 def image_loader(path):
     img = Image.open(path)
     img_tensor = base_transform(img)
     return img_tensor
-
 
 def lr_image_loader(path, upscale_factor):
     img = Image.open(path)
@@ -108,7 +105,6 @@ class FRDataset(data.Dataset):
     # # this returns the basic infomation of the dataset.
     # def touch(self):
 
-
 class loader_wrapper(object):
     def __init__(self, loader):
         self.loader = loader
@@ -143,7 +139,7 @@ def get_data_loaders(batch, shuffle_dataset=True, dataset_size=0, validation_spl
     if dataset_size == 0:
         dataset_size = len(FRData)
     #validation_split = 0.2  # Train-Val : 8-2
-    print("Total data number:", len(FRData))
+    print("Dataset size:", len(FRData))
     indices = list(range(dataset_size))
     split = int(np.floor(validation_split * dataset_size))
     if shuffle_dataset:
@@ -153,9 +149,9 @@ def get_data_loaders(batch, shuffle_dataset=True, dataset_size=0, validation_spl
     train_indices, val_indices = indices[split:], indices[:split]
     print(train_indices)
     train_sampler = SubsetRandomSampler(train_indices)
-    print("Train sample numbers: ", len(train_sampler))
+    print("Training set size: ", len(train_sampler))
     valid_sampler = SubsetRandomSampler(val_indices)
-    print("Validation sample numbers: ", len(valid_sampler))
+    print("Validation set size: ", len(valid_sampler))
 
     train_loader = torch.utils.data.DataLoader(FRData, batch_size=batch, sampler=train_sampler, drop_last=True)
     validation_loader = torch.utils.data.DataLoader(FRData, batch_size=batch, sampler=valid_sampler, drop_last=True)
