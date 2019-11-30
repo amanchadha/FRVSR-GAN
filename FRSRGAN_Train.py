@@ -74,7 +74,7 @@ optimizerD = optim.Adam(netD.parameters(), lr=lr)
 
 results = {'DLoss': [], 'GLoss': [], 'DScore': [], 'GScore': [], 'PSNR': [], 'SSIM': []}
 
-def trainModel():
+def trainModel(epoch):
     trainBar = tqdm(trainLoader)
     runningResults = {'batchSize': 0, 'DLoss': 0, 'GLoss': 0, 'DScore': 0, 'GScore': 0}
 
@@ -222,7 +222,7 @@ def main():
     """ Lets begin the training process! """
 
     for epoch in range(1, NUM_EPOCHS + 1):
-        runningResults = trainModel()
+        runningResults = trainModel(epoch)
 
         # Do validation only if express mode is not enabled
         if not express:
