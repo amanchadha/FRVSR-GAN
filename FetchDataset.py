@@ -13,7 +13,7 @@ import argparse, os, sys, shutil, urllib.request, logger
 from tqdm import tqdm
 import zipfile
 
-################################################### DATASETFETCHER KBOBS ###############################################
+################################################### DATASETFETCHER KNOBS ###############################################
 # URL to get the the Vimeo90K dataset (get the original test set - not downsampled or downgraded by noise) from
 DATASET_URL = "http://data.csail.mit.edu/tofu/testset/vimeo_test_clean.zip"
 
@@ -81,7 +81,7 @@ else:
     videoList = os.listdir(sequencesPath)
     videoList.sort()
 
-    # Go through each video sequence and copy it over in the structure we need  
+    # Go through each video sequence and copy it over in the structure we need
     count = 0
     for video in videoList:
        videoPath = os.path.join(sequencesPath, video)
