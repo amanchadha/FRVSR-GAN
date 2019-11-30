@@ -11,7 +11,7 @@ aman@amanchadha.com
 
 import os, sys, shutil, urllib.request
 from tqdm import tqdm
-from zipfile import ZipFile
+import zipfile
 
 DATASET_URL = "http://data.csail.mit.edu/tofu/testset/vimeo_test_clean.zip"
 DATA_FOLDER = "Data"
@@ -47,10 +47,10 @@ if not os.path.exists(SOURCE_PATH):
     print(os.path.join(DATA_FOLDER, 'vimeo_test_clean.zip'))
 
     try:
-        with ZipFile(os.path.join(DATA_FOLDER, 'vimeo_test_clean.zip'), 'r') as zipObj:
+        with zipfile.ZipFile(os.path.join(DATA_FOLDER, 'vimeo_test_clean.zip'), 'r') as zipObj:
         # Extract all the contents of zip file in current directory
             zipObj.extractall(DATA_FOLDER)
-    except ZipFile.BadZipFile:
+    except zipfile.BadZipFile:
         # Re-download the file
         downloadURL(DATASET_URL, os.path.join(DATA_FOLDER, "vimeo_test_clean.zip"))
         zipObj.extractall(DATA_FOLDER)
