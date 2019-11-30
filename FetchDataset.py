@@ -1,31 +1,47 @@
 """
 This file fetches and structures the dataset so it can be consumed by the algorithm.
 
-- Download Vimeo90K dataset (get the original test set - not downsampled or downgraded by noise) from:
+- Download the Vimeo90K dataset (get the original test set - not downsampled or downgraded by noise) from:
   http://data.csail.mit.edu/tofu/testset/vimeo_test_clean.zip
 - Run this code for LR and HR seperately to form a sorted data folder for convenience
 - To delete all the .DS_Store files: find . -name '.DS_Store' -type f -delete
 
-aman@amanchadha.com
+Aman Chadha | aman@amanchadha.com
 """
 
-import os, sys, shutil, urllib.request
+import argparse, os, sys, shutil, urllib.request, logger
 from tqdm import tqdm
 import zipfile
 
+################################################### DATASETFETCHER KBOBS ###############################################
+# URL to get the the Vimeo90K dataset (get the original test set - not downsampled or downgraded by noise) from
 DATASET_URL = "http://data.csail.mit.edu/tofu/testset/vimeo_test_clean.zip"
+
+# Folder where all the data resides
 DATA_FOLDER = "Data"
+
+# Folder within data where the HR dataset resides
 SOURCE_PATH = os.path.join(DATA_FOLDER, "vimeo_test_clean")
+
+# Destination folder
 DEST_PATH = os.path.join(DATA_FOLDER, "HR")
+########################################################################################################################
+
+parser = argparse.ArgumentParser(description='iSeeBetter Dataset Fetcher.')
+parser.add_argument('-d', '--debug', default=False, action='store_true', help='Print debug spew.')
+args = parser.parse_args()
+
+# Initialize logger
+logger.initLogger(args.debug)
 
 # Create a data folder if it doesn't exist
 if not os.path.exists(DATA_FOLDER):
     try:
         os.mkdir(DATA_FOLDER)
     except OSError:
-        print("Creation of the directory %s failed" % path)
+        logger.info("Creation of the directory %s failed" % path)
     else:
-        print("Successfully created the directory %s " % path)
+        logger.debug("Successfully created the directory %s " % path)
 
 class downloadProgressBar(tqdm):
     def update_to(self, b=1, bsize=1, tsize=None):
@@ -44,7 +60,7 @@ if not os.path.exists(SOURCE_PATH):
         downloadURL(DATASET_URL, os.path.join(DATA_FOLDER, "vimeo_test_clean.zip"))
 
     # Extract it
-    print(os.path.join(DATA_FOLDER, 'vimeo_test_clean.zip'))
+    logger.info("Extracting", os.path.join(DATA_FOLDER, 'vimeo_test_clean.zip'))
 
     try:
         with zipfile.ZipFile(os.path.join(DATA_FOLDER, 'vimeo_test_clean.zip'), 'r') as zipObj:
@@ -65,6 +81,7 @@ else:
     videoList = os.listdir(sequencesPath)
     videoList.sort()
 
+    # Go through each video sequence and copy it over in the structure we need  
     count = 0
     for video in videoList:
        videoPath = os.path.join(sequencesPath, video)
@@ -76,5 +93,5 @@ else:
            count += 1
            new_frames_name = count
            des = os.path.join(DEST_PATH, str(new_frames_name))
-           print("Creating: ", des)
+           logger.info("Creating: ", des)
            shutil.copytree(frames_path, des)
