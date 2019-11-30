@@ -73,28 +73,28 @@ if not os.path.exists(SOURCE_PATH):
         # Re-download the file
         downloadURL(DATASET_URL, os.path.join(DATA_FOLDER, DATASET_FILE))
         zipObj.extractall(DATA_FOLDER)
-else:
-    # Recursively remove all the ".DS_Store files"
-    for currentPath, _, currentFiles in os.walk(SOURCE_PATH):
-        if ".DS_Store" in currentFiles:
-            os.remove(os.path.join(currentPath, ".DS_Store"))
 
-    # Make a list of video sequences
-    sequencesPath = os.path.join(SOURCE_PATH, "sequences")
-    videoList = os.listdir(sequencesPath)
-    videoList.sort()
+# Recursively remove all the ".DS_Store files"
+for currentPath, _, currentFiles in os.walk(SOURCE_PATH):
+    if ".DS_Store" in currentFiles:
+        os.remove(os.path.join(currentPath, ".DS_Store"))
 
-    # Go through each video sequence and copy it over in the structure we need
-    count = 0
-    for video in videoList:
-       videoPath = os.path.join(sequencesPath, video)
-       framesList = os.listdir(videoPath)
-       framesList.sort()
+# Make a list of video sequences
+sequencesPath = os.path.join(SOURCE_PATH, "sequences")
+videoList = os.listdir(sequencesPath)
+videoList.sort()
 
-       for frames in framesList:
-           frames_path = os.path.join(videoPath, frames)
-           count += 1
-           new_frames_name = count
-           des = os.path.join(DEST_PATH, str(new_frames_name))
-           logger.info("Creating: ", des)
-           shutil.copytree(frames_path, des)
+# Go through each video sequence and copy it over in the structure we need
+count = 0
+for video in videoList:
+   videoPath = os.path.join(sequencesPath, video)
+   framesList = os.listdir(videoPath)
+   framesList.sort()
+
+   for frames in framesList:
+       frames_path = os.path.join(videoPath, frames)
+       count += 1
+       new_frames_name = count
+       des = os.path.join(DEST_PATH, str(new_frames_name))
+       logger.info("Creating: ", des)
+       shutil.copytree(frames_path, des)
