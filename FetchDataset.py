@@ -41,14 +41,19 @@ def downloadURL(url, output_path):
 if not os.path.exists(SOURCE_PATH):
     # Fetch the dataset if it hasn't been downloaded yet
     if not os.path.exists(SOURCE_PATH + '.zip'):
-        downloadURL(os.path.join(DATA_FOLDER, "vimeo_test_clean.zip"))
+        downloadURL(DATASET_URL, os.path.join(DATA_FOLDER, "vimeo_test_clean.zip"))
 
     # Extract it
     print(os.path.join(DATA_FOLDER, 'vimeo_test_clean.zip'))
 
     with ZipFile(os.path.join(DATA_FOLDER, 'vimeo_test_clean.zip'), 'r') as zipObj:
         # Extract all the contents of zip file in current directory
-        zipObj.extractall(DATA_FOLDER)
+        try:
+            zipObj.extractall(DATA_FOLDER)
+        except BadZipFile:
+            # Re-download the file
+            downloadURL(DATASET_URL, os.path.join(DATA_FOLDER, "vimeo_test_clean.zip"))
+            zipObj.extractall(DATA_FOLDER)
 else:
     # Recursively remove all the ".DS_Store files"
     for currentPath, _, currentFiles in os.walk(SOURCE_PATH):
