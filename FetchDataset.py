@@ -10,20 +10,45 @@ aman@amanchadha.com
 """
 
 import os, sys, shutil, urllib.request
+from tqdm import tqdm
 from zipfile import ZipFile
 
 DATASET_URL = "http://data.csail.mit.edu/tofu/testset/vimeo_test_clean.zip"
-SOURCE_PATH = "Data/vimeo_test_clean"
-DEST_PATH = "Data/HR"
+DATA_FOLDER = "Data"
+SOURCE_PATH = os.path.join(DATA_FOLDER, "vimeo_test_clean")
+DEST_PATH = os.path.join(DATA_FOLDER, "HR")
+
+# Create a data folder if it doesn't exist
+if not os.path.exists(DATA_FOLDER):
+    try:
+        os.mkdir(DATA_FOLDER)
+    except OSError:
+        print("Creation of the directory %s failed" % path)
+    else:
+        print("Successfully created the directory %s " % path)
+
+class downloadProgressBar(tqdm):
+    def update_to(self, b=1, bsize=1, tsize=None):
+        if tsize is not None:
+            self.total = tsize
+        self.update(b * bsize - self.n)
+
+def downloadURL(url, output_path):
+    with downloadProgressBar(unit='B', unit_scale=True, miniters=1, desc=url.split('/')[-1]) as t:
+        urllib.request.urlretrieve(url, filename=output_path, reporthook=t.update_to)
 
 # If the dataset doesn't exist, download and extract it
-if not os.path.exists(SOURCE_PATH + '.zip'):
-    pass
-    # Fetch the dataset
-    urllib.request.urlretrieve(DATASET_URL, "Data/vimeo_test_clean.zip")
+if not os.path.exists(SOURCE_PATH):
+    # Fetch the dataset if it hasn't been downloaded yet
+    if not os.path.exists(SOURCE_PATH + '.zip'):
+        downloadURL(os.path.join(DATA_FOLDER, "vimeo_test_clean.zip"))
 
     # Extract it
-    ZipFile.extractall(path="Data/vimeo_test_clean.zip")
+    print(os.path.join(DATA_FOLDER, 'vimeo_test_clean.zip'))
+
+    with ZipFile(os.path.join(DATA_FOLDER, 'vimeo_test_clean.zip'), 'r') as zipObj:
+        # Extract all the contents of zip file in current directory
+        zipObj.extractall()
 else:
     # Recursively remove all the ".DS_Store files"
     for currentPath, _, currentFiles in os.walk(SOURCE_PATH):
