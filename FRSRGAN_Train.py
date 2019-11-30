@@ -1,16 +1,15 @@
 import argparse
 from math import log10
-
 import gc
 import pandas as pd
 import torch.optim as optim
 import torch.utils.data
 from tqdm import tqdm
 import Dataset_OnlyHR
+import logger
 from FRVSR_Models import FRVSR
-
 from FRVSR_Models import GeneratorLoss
-from SRGAN.model import Generator, Discriminator
+from SRGAN.model import Discriminator
 import SRGAN.pytorch_ssim as pts
 
 parser = argparse.ArgumentParser(description='Train Super Resolution Models')
@@ -21,22 +20,29 @@ parser.add_argument('--height', default=64, type=int, help='lr pic height')
 parser.add_argument('--dataset_size', default=0, type=int, help='dataset_size, 0 to use all')
 parser.add_argument('--batch_size', default=2, type=int, help='batch_size, default 2')
 parser.add_argument('--lr', default=1e-5, type=float, help='learning rate, default 1e-5')
-opt = parser.parse_args()
+args = parser.parse_args()
 
+################################################## iSEEBETTER TRAINER KNOBS #############################################
 UPSCALE_FACTOR = 4
-NUM_EPOCHS = opt.num_epochs
-WIDTH = opt.width
-HEIGHT = opt.height
-batch_size = opt.batch_size
-dataset_size = opt.dataset_size
-lr = opt.lr
+NUM_EPOCHS = args.num_epochs
+WIDTH = args.width
+HEIGHT = args.height
+batch_size = args.batch_size
+dataset_size = args.dataset_size
+lr = args.lr
+########################################################################################################################
 
 train_loader, val_loader = Dataset_OnlyHR.get_data_loaders(batch_size, dataset_size=dataset_size, validation_split=0.2)
 num_train_batches = len(train_loader)
 num_val_batches = len(val_loader)
 
+logger.initLogger(args.debug)
+
+# Use Generator as FRVSR
 netG = FRVSR(batch_size, lr_width=WIDTH, lr_height=HEIGHT)
 print('# generator parameters:', sum(param.numel() for param in netG.parameters()))
+
+# Use Discriminator from SRGAN
 netD = Discriminator()
 print('# discriminator parameters:', sum(param.numel() for param in netD.parameters()))
 
@@ -47,6 +53,7 @@ if torch.cuda.is_available():
     netD.cuda()
     generator_criterion.cuda()
 
+# Use Adam optimizer
 optimizerG = optim.Adam(netG.parameters(), lr=lr)
 optimizerD = optim.Adam(netD.parameters(), lr=lr)
 
@@ -64,9 +71,9 @@ for epoch in range(1, NUM_EPOCHS + 1):
         batch_size = data.size(0)
         running_results['batch_sizes'] += batch_size
 
-        ############################
+        ################################################################################################################
         # (1) Update D network: maximize D(x)-1-D(G(z))
-        ###########################
+        ################################################################################################################
         fake_hrs = []
         fake_lrs = []
         fake_scrs = []
@@ -97,9 +104,9 @@ for epoch in range(1, NUM_EPOCHS + 1):
         d_loss.backward(retain_graph=True)
         optimizerD.step()
 
-        ############################
+        ################################################################################################################
         # (2) Update G network: minimize 1-D(G(z)) + Perception Loss + Image Loss + TV Loss
-        ###########################
+        ################################################################################################################
         g_loss = 0
         netG.zero_grad()
         idx = 0
@@ -163,10 +170,11 @@ for epoch in range(1, NUM_EPOCHS + 1):
                 valing_results['psnr'], valing_results['ssim']))
         gc.collect()
 
-    # save model parameters
+    # Save model parameters
     torch.save(netG.state_dict(), 'epochs/netG_epoch_%d_%d.pth' % (UPSCALE_FACTOR, epoch))
     torch.save(netD.state_dict(), 'epochs/netD_epoch_%d_%d.pth' % (UPSCALE_FACTOR, epoch))
-    # save loss\scores\psnr\ssim
+
+    # Save Loss\Scores\PSNR\SSIM
     results['d_loss'].append(running_results['d_loss'] / running_results['batch_sizes'])
     results['g_loss'].append(running_results['g_loss'] / running_results['batch_sizes'])
     results['d_score'].append(running_results['d_score'] / running_results['batch_sizes'])
