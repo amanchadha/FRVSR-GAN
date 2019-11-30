@@ -75,98 +75,97 @@ optimizerD = optim.Adam(netD.parameters(), lr=lr)
 results = {'DLoss': [], 'GLoss': [], 'DScore': [], 'GScore': [], 'PSNR': [], 'SSIM': []}
 
 def trainModel():
-    for epoch in range(1, NUM_EPOCHS + 1):
-        trainBar = tqdm(trainLoader)
-        runningResults = {'batchSize': 0, 'DLoss': 0, 'GLoss': 0, 'DScore': 0, 'GScore': 0}
+    trainBar = tqdm(trainLoader)
+    runningResults = {'batchSize': 0, 'DLoss': 0, 'GLoss': 0, 'DScore': 0, 'GScore': 0}
 
-        netG.train()
-        netD.train()
+    netG.train()
+    netD.train()
 
-        for data, target in trainBar:
-            batchSize = data.size(0)
-            runningResults['batchSize'] += batchSize
+    for data, target in trainBar:
+        batchSize = data.size(0)
+        runningResults['batchSize'] += batchSize
 
-            ################################################################################################################
-            # (1) Update D network: maximize D(x)-1-D(G(z))
-            ################################################################################################################
-            fakeHRs = []
-            fakeLRs = []
-            fakeScrs = []
-            realScrs = []
-            DLoss = 0
+        ################################################################################################################
+        # (1) Update D network: maximize D(x)-1-D(G(z))
+        ################################################################################################################
+        fakeHRs = []
+        fakeLRs = []
+        fakeScrs = []
+        realScrs = []
+        DLoss = 0
 
-            # Zero-out gradients, i.e., start afresh
-            netD.zero_grad()
+        # Zero-out gradients, i.e., start afresh
+        netD.zero_grad()
 
-            netG.init_hidden(device)
+        netG.init_hidden(device)
 
-            for LRImg, HRImg in zip(data, target):
-                HRImg = HRImg.to(device)
-                LRImg = LRImg.to(device)
+        for LRImg, HRImg in zip(data, target):
+            HRImg = HRImg.to(device)
+            LRImg = LRImg.to(device)
 
-                fakeHR, fakeLR = netG(LRImg)
+            fakeHR, fakeLR = netG(LRImg)
 
-                realOut = netD(HRImg).mean()
-                fake_out = netD(fakeHR).mean()
+            realOut = netD(HRImg).mean()
+            fake_out = netD(fakeHR).mean()
 
-                fakeHRs.append(fakeHR)
-                fakeLRs.append(fakeLR)
-                fakeScrs.append(fake_out)
-                realScrs.append(realOut)
+            fakeHRs.append(fakeHR)
+            fakeLRs.append(fakeLR)
+            fakeScrs.append(fake_out)
+            realScrs.append(realOut)
 
-                DLoss += 1 - realOut + fake_out
+            DLoss += 1 - realOut + fake_out
 
-            DLoss /= len(data)
+        DLoss /= len(data)
 
-            # Calculate gradients
-            DLoss.backward(retain_graph=True)
+        # Calculate gradients
+        DLoss.backward(retain_graph=True)
 
-            # Update weights
-            optimizerD.step()
+        # Update weights
+        optimizerD.step()
 
-            ################################################################################################################
-            # (2) Update G network: minimize 1-D(G(z)) + Perception Loss + Image Loss + TV Loss
-            ################################################################################################################
-            GLoss = 0
+        ################################################################################################################
+        # (2) Update G network: minimize 1-D(G(z)) + Perception Loss + Image Loss + TV Loss
+        ################################################################################################################
+        GLoss = 0
 
-            # Zero-out gradients, i.e., start afresh
-            netG.zero_grad()
+        # Zero-out gradients, i.e., start afresh
+        netG.zero_grad()
 
-            idx = 0
-            for fakeHR, fakeLR, fake_scr, HRImg, LRImg in zip(fakeHRs, fakeLRs, fakeScrs, target, data):
-                fakeHR = fakeHR.to(device)
-                fakeLR = fakeLR.to(device)
-                fake_scr = fake_scr.to(device)
-                HRImg = HRImg.to(device)
-                LRImg = LRImg.to(device)
-                GLoss += generatorCriterion(fake_scr, fakeHR, HRImg, fakeLR, LRImg, idx)
-                idx += 1
+        idx = 0
+        for fakeHR, fakeLR, fake_scr, HRImg, LRImg in zip(fakeHRs, fakeLRs, fakeScrs, target, data):
+            fakeHR = fakeHR.to(device)
+            fakeLR = fakeLR.to(device)
+            fake_scr = fake_scr.to(device)
+            HRImg = HRImg.to(device)
+            LRImg = LRImg.to(device)
+            GLoss += generatorCriterion(fake_scr, fakeHR, HRImg, fakeLR, LRImg, idx)
+            idx += 1
 
-            GLoss /= len(data)
+        GLoss /= len(data)
 
-            # Calculate gradients
-            GLoss.backward()
+        # Calculate gradients
+        GLoss.backward()
 
-            # Update weights
-            optimizerG.step()
+        # Update weights
+        optimizerG.step()
 
-            realOut = torch.Tensor(realScrs).mean()
-            fake_out = torch.Tensor(fakeScrs).mean()
-            runningResults['GLoss'] += GLoss.data.item() * batchSize
-            runningResults['DLoss'] += DLoss.data.item() * batchSize
-            runningResults['DScore'] += realOut.data.item() * batchSize
-            runningResults['GScore'] += fake_out.data.item() * batchSize
+        realOut = torch.Tensor(realScrs).mean()
+        fake_out = torch.Tensor(fakeScrs).mean()
+        runningResults['GLoss'] += GLoss.data.item() * batchSize
+        runningResults['DLoss'] += DLoss.data.item() * batchSize
+        runningResults['DScore'] += realOut.data.item() * batchSize
+        runningResults['GScore'] += fake_out.data.item() * batchSize
 
-            trainBar.set_description(desc='[Epoch: %d/%d] D Loss: %.4f G Loss: %.4f D(x): %.4f D(G(z)): %.4f' % (
-                epoch, NUM_EPOCHS, runningResults['DLoss'] / runningResults['batchSize'],
-                runningResults['GLoss'] / runningResults['batchSize'],
-                runningResults['DScore'] / runningResults['batchSize'],
-                runningResults['GScore'] / runningResults['batchSize']))
-            gc.collect()
+        trainBar.set_description(desc='[Epoch: %d/%d] D Loss: %.4f G Loss: %.4f D(x): %.4f D(G(z)): %.4f' % (
+            epoch, NUM_EPOCHS, runningResults['DLoss'] / runningResults['batchSize'],
+            runningResults['GLoss'] / runningResults['batchSize'],
+            runningResults['DScore'] / runningResults['batchSize'],
+            runningResults['GScore'] / runningResults['batchSize']))
+        gc.collect()
 
-        netG.eval()
+    netG.eval()
 
-        return epoch, runningResults
+    return runningResults
 
 def validateModel():
     validationBar = tqdm(valLoader)
@@ -221,13 +220,15 @@ def saveModelParams(epoch, runningResults, validationResults={}):
 
 def main():
     """ Lets begin the training process! """
-    epoch, runningResults = trainModel()
 
-    # Do validation only if express mode is not enabled
-    if not express:
-        validationResults = validateModel()
+    for epoch in range(1, NUM_EPOCHS + 1):
+        runningResults = trainModel()
 
-    saveModelParams(epoch, runningResults)#, validationResults)
+        # Do validation only if express mode is not enabled
+        if not express:
+            validationResults = validateModel()
+
+        saveModelParams(epoch, runningResults)#, validationResults)
 
 if __name__ == "__main__":
     main()
