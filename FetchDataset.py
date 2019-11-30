@@ -46,14 +46,14 @@ if not os.path.exists(SOURCE_PATH):
     # Extract it
     print(os.path.join(DATA_FOLDER, 'vimeo_test_clean.zip'))
 
-    with ZipFile(os.path.join(DATA_FOLDER, 'vimeo_test_clean.zip'), 'r') as zipObj:
+    try:
+        with ZipFile(os.path.join(DATA_FOLDER, 'vimeo_test_clean.zip'), 'r') as zipObj:
         # Extract all the contents of zip file in current directory
-        try:
             zipObj.extractall(DATA_FOLDER)
-        except BadZipFile:
-            # Re-download the file
-            downloadURL(DATASET_URL, os.path.join(DATA_FOLDER, "vimeo_test_clean.zip"))
-            zipObj.extractall(DATA_FOLDER)
+    except ZipFile.BadZipFile:
+        # Re-download the file
+        downloadURL(DATASET_URL, os.path.join(DATA_FOLDER, "vimeo_test_clean.zip"))
+        zipObj.extractall(DATA_FOLDER)
 else:
     # Recursively remove all the ".DS_Store files"
     for currentPath, _, currentFiles in os.walk(SOURCE_PATH):
