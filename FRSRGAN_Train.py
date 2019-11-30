@@ -37,7 +37,7 @@ lr = args.lr
 express = args.express
 
 # Load dataset
-trainLoader, valLoader = Dataset_OnlyHR.get_data_loaders(batchSize, dataset_size=dataset_size, validation_split=0.2)
+trainLoader, valLoader = Dataset_OnlyHR.get_data_loaders(batchSize, dataset_size=dataset_size, validation_split=0.1)
 numTrainBatches = len(trainLoader)
 numValBatches = len(valLoader)
 
