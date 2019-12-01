@@ -117,7 +117,7 @@ class loader_wrapper(object):
         return len(self.loader)
 
 
-def get_data_loaders(batch, shuffle_dataset=True, dataset_size=0, validation_split=0.2):
+def get_data_loaders(batch, shuffle_dataset=True, dataset_size=0, validation_split=0.2, fixedIndices=-1):
     # batch = 4 # batch size of the data every time for training
     # batch_number = 100000  # number of batches, so we totally have batch_number * batch images
     # HR_height = height
@@ -128,8 +128,7 @@ def get_data_loaders(batch, shuffle_dataset=True, dataset_size=0, validation_spl
 
     train_dir_HR = 'Data/HR'
 
-    FRData = FRDataset(hr_dir=train_dir_HR,upscale_factor = upscale_factor)
-    #import pdb; pdb.set_trace()
+    FRData = FRDataset(hr_dir=train_dir_HR, upscale_factor=upscale_factor)
 
     # data_loader_LR = data.DataLoader(FRData_LR, batch_size = batch, shuffle = True)
     # data_loader_HR = data.DataLoader(FRData_HR, batch_size = batch, shuffle = True)
@@ -138,16 +137,17 @@ def get_data_loaders(batch, shuffle_dataset=True, dataset_size=0, validation_spl
     random_seed = 42
     if dataset_size == 0:
         dataset_size = len(FRData)
-    #validation_split = 0.2  # Train-Val : 8-2
     print("Dataset size:", len(FRData))
     indices = list(range(dataset_size))
     split = int(np.floor(validation_split * dataset_size))
     if shuffle_dataset:
         np.random.seed(random_seed)
         np.random.shuffle(indices)
-    #indices = [1]
+    indices = [fixedIndices] if fixedIndices != -1 else indices
     train_indices, val_indices = indices[split:], indices[:split]
+    print("Training/Validation split: %s/%s", (1-validation_split)*100, validation_split*100)
     print("Training samples chosen:", train_indices)
+    print("Validation samples chosen:", val_indices)
     train_sampler = SubsetRandomSampler(train_indices)
     print("Training set size:", len(train_sampler))
     valid_sampler = SubsetRandomSampler(val_indices)
