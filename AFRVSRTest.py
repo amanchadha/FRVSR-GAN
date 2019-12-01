@@ -11,7 +11,7 @@ import numpy as np
 import torch
 import torch.nn.functional as func
 import matplotlib.pyplot as plt
-import Dataset_OnlyHR
+import DatasetLoader
 import AFRVSRModels
 from skimage import img_as_ubyte
 from skimage.util import img_as_float32
@@ -101,7 +101,7 @@ if __name__ == "__main__":
         model.load_state_dict(checkpoint)
         model.eval()
 
-        train_loader, val_loader = Dataset_OnlyHR.get_data_loaders(batch=1, fixedIndices=0, dataset_size=0, validation_split=1, shuffle_dataset=True)
+        train_loader, val_loader = DatasetLoader.get_data_loaders(batch=1, fixedIndices=0, dataset_size=0, validation_split=1, shuffle_dataset=True)
 
         tot_psnr = 0
         for idx, (lr_example, hr_example) in enumerate(val_loader, 1):
@@ -161,10 +161,10 @@ if __name__ == "__main__":
                 print(l2)
                 # print(lr_out)
                 # # print(image)
-                # hr_out = Dataset_OnlyHR.inverse_transform(hr_out.clone())
-                # lr_out = Dataset_OnlyHR.inverse_transform(lr_out.clone())
-                # image = Dataset_OnlyHR.inverse_transform(image.clone())
-                # truth = Dataset_OnlyHR.inverse_transform(truth.clone())
+                # hr_out = DatasetLoader.inverse_transform(hr_out.clone())
+                # lr_out = DatasetLoader.inverse_transform(lr_out.clone())
+                # image = DatasetLoader.inverse_transform(image.clone())
+                # truth = DatasetLoader.inverse_transform(truth.clone())
                 hr_out = trunc(hr_out.clone())
                 lr_out = trunc(lr_out.clone())
                 aw_out = trunc(model.afterWarp.clone())

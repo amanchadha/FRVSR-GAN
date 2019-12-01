@@ -5,7 +5,7 @@ import pandas as pd
 import torch.optim as optim
 import torch.utils.data
 from tqdm import tqdm
-import Dataset_OnlyHR
+import DatasetLoader
 import logger
 from AFRVSRModels import FRVSR
 from AFRVSRModels import GeneratorLoss
@@ -37,7 +37,7 @@ lr = args.lr
 express = args.express
 
 # Load dataset
-trainLoader, valLoader = Dataset_OnlyHR.get_data_loaders(batchSize, dataset_size=dataset_size, validation_split=0.1)
+trainLoader, valLoader = DatasetLoader.get_data_loaders(batchSize, dataset_size=dataset_size, validation_split=0.1)
 numTrainBatches = len(trainLoader)
 numValBatches = len(valLoader)
 

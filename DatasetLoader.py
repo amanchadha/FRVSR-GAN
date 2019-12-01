@@ -29,6 +29,7 @@ def image_loader(path):
     return img_tensor
 
 def lr_image_loader(path, upscale_factor):
+    """ Downscale an HR image to an LR image. """
     img = Image.open(path)
     width, height = img.size
     tw = width//upscale_factor
@@ -39,7 +40,6 @@ def lr_image_loader(path, upscale_factor):
     img_tensor = base_transform(img)
     #print(img_tensor.shape)
     return img_tensor
-
 
 class FRDataset(data.Dataset):
 
