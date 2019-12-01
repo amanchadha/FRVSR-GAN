@@ -3,7 +3,9 @@ Data/*
 outputframes/*
 
 # Files
-Train_iSeeBetter_nf.py
+run.sh
+DL_AMI.txt
+epochs/FRVSRwithDisc.zip
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
