@@ -1,5 +1,6 @@
 # Folders
-Data/
+Data/*
+outputframes/*
 
 # Files
 Train_iSeeBetter_nf.py
