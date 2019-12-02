@@ -68,5 +68,4 @@ Credits:
 Cite the work as:
 ```
 CVPR citation
-}
 ```
