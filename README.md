@@ -63,3 +63,10 @@ To use the pre-trained model and test on a random video from within the dataset:
 Credits:
 - [SRGAN Implementation](https://github.com/leftthomas/SRGAN) by LeftThomas.
 - We used [FR-SRGAN](https://github.com/ReNginx/FR-SRGAN) as a baseline for our Adaptive-FRVSR implementation.
+
+## Citation
+Cite the work as:
+```
+CVPR citation
+}
+```
