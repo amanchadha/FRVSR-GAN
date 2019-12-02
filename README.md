@@ -7,11 +7,12 @@ Project for Stanford CS230: Deep Learning
 ## Required Packages
 
 ```
-pytorch
-numpy
-scikit-image
-opencv-python
-tqdm
+torch==1.3.0.post2
+pytorch-ssim==0.1
+numpy==1.16.4
+opencv-python==4.1.1.26
+scikit-image==0.15.0
+tqdm==4.37.0
 ```
 
 To load,
@@ -55,7 +56,7 @@ Train the model using (takes roughly an hour per epoch on an NVIDIA Tesla V100):
 
 To use the pre-trained model and test on a random video from within the dataset:
 
-```python AFRVSRTest.py`````
+```python AFRVSRTest.py```
 
 ## Acknowledgements
 

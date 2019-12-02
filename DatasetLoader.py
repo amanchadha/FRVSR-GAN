@@ -61,7 +61,7 @@ class FRDataset(data.Dataset):
             file_dir_frames = os.path.join(dir, frames)
             imgs_path = os.listdir(file_dir_frames)
             imgs_path.sort()
-            #import pdb; pdb.set_trace()
+
             i = 0
             for img in imgs_path:
                 final_path = file_dir_frames + "/" + img

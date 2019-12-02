@@ -72,8 +72,6 @@ device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 optimizerG = optim.Adam(netG.parameters(), lr=lr)
 optimizerD = optim.Adam(netD.parameters(), lr=lr)
 
-results = {'DLoss': [], 'GLoss': [], 'DScore': [], 'GScore': [], 'PSNR': [], 'SSIM': []}
-
 def trainModel(epoch):
     trainBar = tqdm(trainLoader)
     runningResults = {'batchSize': 0, 'DLoss': 0, 'GLoss': 0, 'DScore': 0, 'GScore': 0}
@@ -199,6 +197,8 @@ def validateModel():
         return validationResults
 
 def saveModelParams(epoch, runningResults, validationResults={}):
+    results = {'DLoss': [], 'GLoss': [], 'DScore': [], 'GScore': [], 'PSNR': [], 'SSIM': []}
+
     # Save model parameters
     torch.save(netG.state_dict(), 'epochs/netG_epoch_%d_%d.pth' % (UPSCALE_FACTOR, epoch))
     torch.save(netD.state_dict(), 'epochs/netD_epoch_%d_%d.pth' % (UPSCALE_FACTOR, epoch))
