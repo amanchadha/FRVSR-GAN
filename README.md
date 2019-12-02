@@ -20,12 +20,12 @@ To load,
 
 ## Overview
 
-Recently, learning-based models have enhanced the performance of Single-Image Super-Resolution (SISR). However, applying SISR successively to each video frame leads to lack of temporal consistency. On the other hand, VSR models based on convolutional neural networks outperform traditional approaches in terms of image quality metrics such as Peak Signal to Noise Ratio (PSNR) and Structural SIMilarity (SSIM). While optimizing mean squared reconstruction error during training improves PSNR and SSIM, these metrics may not capture fine details in the image leading to misrepresentation of perceptual quality. We propose an Adaptive Frame Recurrent Video Super Resolution (FRVSRGAN-GAN) scheme that seeks to improve temporal consistency by utilizing information multiple similar adjacent frames (both future LR frames and previous SR estimates), in addition to the current frame. Further, to improve the “naturality” associated with the reconstructed image while eliminating artifacts seen with traditional algorithms, we combine the output of the FRVSRGAN-GAN algorithm with a Super-Resolution Generative Adversarial Network (SRGAN). The proposed idea thus not only considers spatial information in the current frame but also temporal information in the adjacent frames thereby offering superior reconstruction fidelity. Once our implementation is complete, we plan to show results on publicly available datasets that demonstrate that the proposed algorithms surpass current state-of-the-art performance in both accuracy and efficiency. 
+Recently, learning-based models have enhanced the performance of Single-Image Super-Resolution (SISR). However, applying SISR successively to each video frame leads to lack of temporal consistency. On the other hand, VSR models based on convolutional neural networks outperform traditional approaches in terms of image quality metrics such as Peak Signal to Noise Ratio (PSNR) and Structural SIMilarity (SSIM). While optimizing mean squared reconstruction error during training improves PSNR and SSIM, these metrics may not capture fine details in the image leading to misrepresentation of perceptual quality. We propose an Adaptive Frame Recurrent Video Super Resolution (FRVSR-GAN) scheme that seeks to improve temporal consistency by utilizing information multiple similar adjacent frames (both future LR frames and previous SR estimates), in addition to the current frame. Further, to improve the “naturality” associated with the reconstructed image while eliminating artifacts seen with traditional algorithms, we combine the output of the FRVSR-GAN algorithm with a Super-Resolution Generative Adversarial Network (SRGAN). The proposed idea thus not only considers spatial information in the current frame but also temporal information in the adjacent frames thereby offering superior reconstruction fidelity. Once our implementation is complete, we plan to show results on publicly available datasets that demonstrate that the proposed algorithms surpass current state-of-the-art performance in both accuracy and efficiency. 
  
-![adjacent frame similarity](https://github.com/amanchadha/FRVSRGAN/blob/master/images/iSeeBetter_AFS.jpg)
+![adjacent frame similarity](https://github.com/amanchadha/FRVSR-GAN/blob/master/images/iSeeBetter_AFS.jpg)
 Figure 1: Adjacent frame similarity
  
-![network arch](https://github.com/amanchadha/FRVSRGAN/blob/master/images/iSeeBetter_NNArch.jpg)
+![network arch](https://github.com/amanchadha/FRVSR-GAN/blob/master/images/iSeeBetter_NNArch.jpg)
 Figure 2: Network architecture
 
 ## Dataset
@@ -34,7 +34,7 @@ To train and evaluate our proposed model, we used the [Vimeo90K](http://data.csa
 
 ## Results
 
-![results](https://github.com/amanchadha/FRVSRGAN/blob/master/images/iSeeBetter_Results.jpg)
+![results](https://github.com/amanchadha/FRVSR-GAN/blob/master/images/iSeeBetter_Results.jpg)
 
 ## Pretrained Model
 Model trained for 7 epochs included under ```epochs/```
