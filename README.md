@@ -44,7 +44,7 @@ To evaluate our proposed model, we used the [Vimeo90K](http://data.csail.mit.edu
 ## Pretrained Model
 Model trained for 7 epochs included under ```epochs/```
 
-## HOW TO
+## Usage
 
 # Training 
 
