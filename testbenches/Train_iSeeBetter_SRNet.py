@@ -9,14 +9,14 @@ import torch.optim.lr_scheduler
 torch.backends.cudnn.benchmark = True
 import matplotlib.pyplot as plt
 import numpy as np
-import AFRVSRModels
+import FRVSRGAN_Models
 import Dataset
 import pytorch_ssim
 from skimage.measure import compare_ssim as ssim
 
 
 def load_model(model_name, batch_size, width, height):
-    model = AFRVSRModels.SRNet(in_dim=3)
+    model = FRVSRGAN_Models.SRNet(in_dim=3)
     if model_name != '':
         model_path = f'./models/{model_name}'
         print("successfully loaded the model")
@@ -36,7 +36,7 @@ def run():
     model = load_model('', batch_size, width, height)
     model = model.to(device)
     
-    torch.save(model.state_dict(), "models/AFRVSRTest")
+    torch.save(model.state_dict(), "models/FRVSRGAN_Test")
     
     train_loader, val_loader = Dataset.get_data_loaders(batch_size, dataset_size=7000, validation_split=0)
     num_train_batches = len(train_loader)

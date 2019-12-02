@@ -1,6 +1,6 @@
 """
 This file tests the SRNet model within FRVSR on a single low resolution video source and upscales it to 4x.
-aman@amanchadha.com
+Aman Chadha | aman@amanchadha.com
 
 Adapted from FR-SRGAN, MIT 6.819 Advances in Computer Vision, Nov 2018
 """
@@ -14,7 +14,7 @@ from torchvision.transforms import ToTensor
 from tqdm import tqdm
 import Dataset
 import checkTrain
-import AFRVSRModels
+import FRVSRGAN_Models
 
 if __name__ == "__main__":
     with torch.no_grad():
@@ -30,7 +30,7 @@ if __name__ == "__main__":
         print(MODEL_NAME)
         device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
         #model = FRVSR.FRVSR(0, 0, 0)
-        model = AFRVSRModels.SRNet(3)  # testing the SRNet only
+        model = FRVSRGAN_Models.SRNet(3)  # testing the SRNet only
 
         model.to(device)
 

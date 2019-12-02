@@ -1,6 +1,6 @@
 """
 This file creates a 4x1 upscaled video.
-aman@amanchadha.com
+Aman Chadha | aman@amanchadha.com
 
 Adapted from FR-SRGAN, MIT 6.819 Advances in Computer Vision, Nov 2018
 """

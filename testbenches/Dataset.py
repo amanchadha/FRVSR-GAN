@@ -1,6 +1,6 @@
 """
 This file contains implementation of dataset classes.
-aman@amanchadha.com
+Aman Chadha | aman@amanchadha.com
 
 Adapted from FR-SRGAN, MIT 6.819 Advances in Computer Vision, Nov 2018
 """

@@ -1,6 +1,6 @@
 """
 This file trains FRVSR on a single low resolution video source and upscales it to 4x.
-aman@amanchadha.com
+Aman Chadha | aman@amanchadha.com
 
 Adapted from FR-SRGAN, MIT 6.819 Advances in Computer Vision, Nov 2018
 """
@@ -16,12 +16,12 @@ import pandas as pd
 from SRGAN import pytorch_ssim
 
 torch.backends.cudnn.benchmark = True
-import AFRVSRModels
-import Dataset_OnlyHR
+import FRVSRGAN_Models
+import DatasetLoader
 
 
 def load_model(model_name, batch_size, width, height):
-    model = AFRVSRModels.FRVSR(batch_size=batch_size, lr_height=height, lr_width=width)
+    model = FRVSRGANModels.FRVSR(batch_size=batch_size, lr_height=height, lr_width=width)
     if model_name != '':
         model_path = f'./models/{model_name}'
         checkpoint = torch.load(model_path, map_location='cpu')
@@ -50,7 +50,7 @@ def run():
     num_val_batches = len(val_loader)
 
     flow_criterion = nn.MSELoss().to(device)
-    content_criterion = AFRVSRModels.Loss().to(device)
+    content_criterion = FRVSRGANModels.Loss().to(device)
 
     ssim_loss = pytorch_ssim.SSIM(window_size=11).to(device)
     optimizer = optim.Adam(model.parameters(), lr=1e-5)

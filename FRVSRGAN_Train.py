@@ -1,3 +1,10 @@
+"""
+This file trains a FRVSR-GAN model on based on an upscaling factor of 4x.
+Aman Chadha | aman@amanchadha.com
+
+Adapted from FR-SRGAN, MIT 6.819 Advances in Computer Vision, Nov 2018
+"""
+
 import argparse
 from math import log10
 import gc
@@ -7,8 +14,8 @@ import torch.utils.data
 from tqdm import tqdm
 import DatasetLoader
 import logger
-from AFRVSRModels import FRVSR
-from AFRVSRModels import GeneratorLoss
+from FRVSRGAN_Models import FRVSR
+from FRVSRGAN_Models import GeneratorLoss
 from SRGAN.model import Discriminator
 import SRGAN.pytorch_ssim as pts
 
@@ -216,7 +223,7 @@ def saveModelParams(epoch, runningResults, validationResults={}):
         data_frame = pd.DataFrame(data={'DLoss': results['DLoss'], 'GLoss': results['GLoss'], 'DScore': results['DScore'],
                                   'GScore': results['GScore']},#, 'PSNR': results['PSNR'], 'SSIM': results['SSIM']},
                                   index=range(1, epoch + 1))
-        data_frame.to_csv(out_path + 'AFRVSR_' + str(UPSCALE_FACTOR) + '_Train_Results.csv', index_label='Epoch')
+        data_frame.to_csv(out_path + 'FRVSRGAN__' + str(UPSCALE_FACTOR) + '_Train_Results.csv', index_label='Epoch')
 
 def main():
     """ Lets begin the training process! """

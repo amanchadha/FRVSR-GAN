@@ -1,6 +1,6 @@
 """
-This file does a quick check of a trained FRVSR model on a single low resolution video source and upscales it to 4x.
-aman@amanchadha.com
+This file does a quick check of a trained FRVSR-GAN model on a single low resolution video source and upscales it to 4x.
+Aman Chadha | aman@amanchadha.com
 
 Adapted from FR-SRGAN, MIT 6.819 Advances in Computer Vision, Nov 2018
 """
@@ -12,7 +12,7 @@ import torch
 import torch.nn.functional as func
 import matplotlib.pyplot as plt
 import DatasetLoader
-import AFRVSRModels
+import FRVSRGAN_Models
 from skimage import img_as_ubyte
 from skimage.util import img_as_float32
 
@@ -85,10 +85,10 @@ def psnr(img1, img2):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Test Single Video')
     # Use FR-SRGAN
-    parser.add_argument('--model', default='./epochs/netG_epoch_4_7.pth', type=str, help='AFRVSR Model')
+    parser.add_argument('--model', default='./epochs/netG_epoch_4_7.pth', type=str, help='FRVSRGAN Model')
 
     # Use FRVSR
-    # parser.add_argument('--model', default='./models/FRVSR.4', type=str, help='AFRVSR Model')
+    # parser.add_argument('--model', default='./models/FRVSR.4', type=str, help='FRVSRGAN Model')
 
     opt = parser.parse_args()
 
@@ -97,7 +97,7 @@ if __name__ == "__main__":
 
     with torch.no_grad():
         device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
-        model = AFRVSRModels.FRVSR(0, 0, 0)
+        model = FRVSRGAN_Models.FRVSR(0, 0, 0)
         model.to(device)
 
         # for cpu
@@ -126,10 +126,10 @@ if __name__ == "__main__":
             hr_video_size = (lr_width * UPSCALE_FACTOR, lr_height * UPSCALE_FACTOR)
             lr_video_size = (lr_width, lr_height)
 
-            output_sr_name = 'AFRVSROut_' + str(UPSCALE_FACTOR) + f'_{idx}_' + 'Random_Sample.mp4'
-            output_gt_name = 'AFRVSROut_' + 'GroundTruth' + f'_{idx}_' + 'Random_Sample.mp4'
-            output_lr_name = 'AFRVSROut_' + 'LowRes' + '_' + 'Random_Sample.mp4'
-            output_aw_name = 'AFRVSROut_' + 'IntermediateWarp' + '_' + 'Random_Sample.mp4'
+            output_sr_name = 'FRVSRGAN_Out_' + str(UPSCALE_FACTOR) + f'_{idx}_' + 'Random_Sample.mp4'
+            output_gt_name = 'FRVSRGAN_Out_' + 'GroundTruth' + f'_{idx}_' + 'Random_Sample.mp4'
+            output_lr_name = 'FRVSRGAN_Out_' + 'LowRes' + '_' + 'Random_Sample.mp4'
+            output_aw_name = 'FRVSRGAN_Out_' + 'IntermediateWarp' + '_' + 'Random_Sample.mp4'
 
             fourcc = cv2.VideoWriter_fourcc(*'MP4V')
             hr_video_writer = cv2.VideoWriter(output_sr_name, fourcc, fps, hr_video_size)

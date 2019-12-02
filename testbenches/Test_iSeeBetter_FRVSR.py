@@ -1,6 +1,6 @@
 """
 This file tests FRVSR on a single low resolution video source and upscales it to 4x.
-aman@amanchadha.com
+Aman Chadha | aman@amanchadha.com
 
 Adapted from FR-SRGAN, MIT 6.819 Advances in Computer Vision, Nov 2018
 """
@@ -13,7 +13,7 @@ import torch
 from torch.autograd import Variable
 from torchvision.transforms import ToTensor
 from tqdm import tqdm
-import AFRVSRModels
+import FRVSRGANModels
 import checkTrain
 
 if __name__ == "__main__":
@@ -28,7 +28,7 @@ if __name__ == "__main__":
         MODEL_NAME = opt.model
 
         device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
-        model = AFRVSRModels.FRVSR(0, 0, 0)
+        model = FRVSRGANModels.FRVSR(0, 0, 0)
 
         model.to(device)
 

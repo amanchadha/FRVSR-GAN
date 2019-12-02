@@ -1,6 +1,6 @@
 """
 This file contains implementation of FRVSR (FNet and SRNet) from https://arxiv.org/abs/1801.04590
-aman@amanchadha.com
+Aman Chadha | aman@amanchadha.com
 
 Adapted from FR-SRGAN, MIT 6.819 Advances in Computer Vision, Nov 2018
 """
@@ -137,7 +137,7 @@ class FRVSR(nn.Module):
         self.height = lr_height
         self.batch_size = batch_size
         self.fnet = FNet()
-        self.todepth = SpaceToDepth(FRVSR.SRFactor)
+        self.todepth = SpaceToDepth(FRVSRGAN.SRFactor)
         self.srnet = SRNet(FRVSR.SRFactor * FRVSR.SRFactor * 3 + 3)  # 3 is channel number
 
     # make sure to call this before every batch train.

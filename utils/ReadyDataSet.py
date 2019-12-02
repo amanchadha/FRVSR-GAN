@@ -7,7 +7,7 @@ This file structures the dataset so it can be consumed by the algorithm.
     # https://macpaw.com/how-to/remove-ds-store-files-on-mac
     # find . -name '.DS_Store' -type f -delete
 
-aman@amanchadha.com
+Aman Chadha | aman@amanchadha.com
 
 Adapted from FR-SRGAN, MIT 6.819 Advances in Computer Vision, Nov 2018
 """

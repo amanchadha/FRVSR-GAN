@@ -122,7 +122,7 @@ if __name__ == "__main__":
         print(f'lr_img shape is {lr_img.shape}, hr_img shape is {hr_img.shape}')
         break
 
-# class TestFRVSR(unittest.TestCase):
+# class TestFRVSRGAN(unittest.TestCase):
 #     def TestGetDataLoader(self):
 #
 
