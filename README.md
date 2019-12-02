@@ -10,7 +10,7 @@ Project for Stanford CS230: Deep Learning
 pytorch
 numpy
 scikit-image
-cv2
+opencv-python
 tqdm
 ```
 
@@ -19,7 +19,7 @@ To load,
 
 ## Usage
 
-To use the pre-trained model and test on a random video from within the dataset:
+
 ```./run.sh```
 
 ## Overview
@@ -39,6 +39,23 @@ To evaluate our proposed model, we used the [Vimeo90K](http://data.csail.mit.edu
 ## Results
 
 ![results](https://github.com/amanchadha/iSeeBetter/blob/master/images/iSeeBetter_Results.jpg)
+
+## Pretrained Model
+Model trained for 7 epochs included under ```epochs/```
+
+## HOW TO
+
+# Training 
+
+Train the model using (takes roughly an hour per epoch on an NVIDIA Tesla V100):
+
+```python AFRVSRTrain.py```
+
+# Testing
+
+To use the pre-trained model and test on a random video from within the dataset:
+
+```python AFRVSRTest.py`````
 
 ## Acknowledgements
 

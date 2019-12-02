@@ -84,7 +84,12 @@ def psnr(img1, img2):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Test Single Video')
+    # Use FR-SRGAN
     parser.add_argument('--model', default='./epochs/netG_epoch_4_7.pth', type=str, help='AFRVSR Model')
+
+    # Use FRVSR
+    # parser.add_argument('--model', default='./models/FRVSR.4', type=str, help='AFRVSR Model')
+
     opt = parser.parse_args()
 
     UPSCALE_FACTOR = 4
@@ -101,7 +106,11 @@ if __name__ == "__main__":
         model.load_state_dict(checkpoint)
         model.eval()
 
-        train_loader, val_loader = DatasetLoader.get_data_loaders(batch=1, fixedIndices=0, dataset_size=0, validation_split=1, shuffle_dataset=True)
+        # To train on fixed input data (controlled by fixedIndices)
+        train_loader, val_loader = DatasetLoader.get_data_loaders(batch=1, dataset_size=0, validation_split=1, shuffle_dataset=True, fixedIndices=0)
+
+        # Train on a random sample
+        # train_loader, val_loader = DatasetLoader.get_data_loaders(batch=1, dataset_size=0, validation_split=1, shuffle_dataset=True)
 
         tot_psnr = 0
         for idx, (lr_example, hr_example) in enumerate(val_loader, 1):
