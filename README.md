@@ -1,4 +1,4 @@
-# FRVSRGAN: A Novel Approach to Video Super-Resolution using Frame Recurrence and Generative Adversarial Networks
+# FRVSR-GAN: A Novel Approach to Video Super-Resolution using Frame Recurrence and Generative Adversarial Networks
 
 Project for Stanford CS230: Deep Learning
 
