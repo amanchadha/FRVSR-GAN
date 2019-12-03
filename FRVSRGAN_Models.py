@@ -137,7 +137,7 @@ class FRVSR(nn.Module):
         self.height = lr_height
         self.batch_size = batch_size
         self.fnet = FNet()
-        self.todepth = SpaceToDepth(FRVSRGAN.SRFactor)
+        self.todepth = SpaceToDepth(FRVSR.SRFactor)
         self.srnet = SRNet(FRVSR.SRFactor * FRVSR.SRFactor * 3 + 3)  # 3 is channel number
 
     # make sure to call this before every batch train.
